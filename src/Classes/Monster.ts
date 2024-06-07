@@ -1,1 +1,1 @@
-class Monster extends Entity {}
+export class Monster extends Entity {}
