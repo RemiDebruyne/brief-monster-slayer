@@ -1,3 +1,3 @@
-import { Entity } from './Entity';
+import { Entity } from './Entity.js';
 
 export class Monster extends Entity {}
