@@ -97,6 +97,10 @@ healButton?.addEventListener('click', () => {
   if (player.hp <= 0) {
     player.hp = 0;
   }
+
+  playerHpElement.innerHTML = String(player.hp);
+  playerHpElement.style.width = `${player.hp}%`;
+
   monsterHpElement.innerHTML = String(monster.hp);
   monsterHpElement.style.width = `${monster.hp}%`;
 
@@ -109,4 +113,18 @@ healButton?.addEventListener('click', () => {
 
 giveUpButton?.addEventListener('click', () => {
   game.isLost = true;
+  const playAgain = confirm(
+    'You fleed the battle... Would you like to play again ?'
+  );
+
+  if (playAgain) {
+    game = Game.newGame();
+    player = game.player;
+    monster = game.monster;
+  }
+  playerHpElement.innerHTML = String(player.hp);
+  playerHpElement.style.width = `${player.hp}%`;
+
+  monsterHpElement.innerHTML = String(monster.hp);
+  monsterHpElement.style.width = `${monster.hp}%`;
 });
