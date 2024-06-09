@@ -1,4 +1,4 @@
-abstract class Random {
+export abstract class Random {
   static rnd(start: number, end: number): number {
     const startFloor = Math.floor(start);
     const endFloor = Math.floor(end);

@@ -1,17 +1,13 @@
 import { Game } from './Classes/Game';
 import { Player } from './Classes/Player';
 import { Monster } from './Classes/Monster';
-import { Entity } from './Classes/Entity';
 
-var a = 5;
 const startButton = document.querySelector('.start-button');
 const attackButton = document.querySelector('.attack-button');
 const attackSpButton = document.querySelector('.attackSP-button');
 const healButton = document.querySelector('.heal-button');
 const giveUpButton = document.querySelector('.giveUp-button');
-const gameButtons: NodeListOf<Element> = document.querySelectorAll(
-  '[data-game-has-started]'
-);
+const gameButtons = document.querySelectorAll('[data-game-has-started]');
 
 let game: Game;
 let player: Player;
@@ -22,8 +18,8 @@ const monsterHpElement = document.getElementById('monster-hp')!;
 startButton?.addEventListener('click', () => {
   startButton.classList.add('hidden');
 
-  for (let i = 0; i < gameButtons.length; i++) {
-    gameButtons[i].classList.remove('hidden');
+  for (const button of gameButtons) {
+    button.classList.remove('hidden');
   }
   game = Game.newGame();
   player = game.player;
@@ -31,7 +27,7 @@ startButton?.addEventListener('click', () => {
   return game;
 });
 
-// Could be refactored
+// Could be refactored => attack and attackSP have the same code with different value
 attackButton?.addEventListener('click', () => {
   monster.hp = Player.attack(monster, 3, 10);
   player.hp = Monster.attack(player, 5, 10);

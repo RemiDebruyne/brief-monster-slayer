@@ -6,7 +6,7 @@ export class Game {
 
   monster: Monster;
 
-  isLost: Boolean = false;
+  isLost = false;
 
   constructor(player: Player, monster: Monster) {
     this.player = player;
