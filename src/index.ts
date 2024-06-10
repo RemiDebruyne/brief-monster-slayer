@@ -1,6 +1,7 @@
 import { Game } from './Classes/Game.js';
 import { Player } from './Classes/Player.js';
 import { Monster } from './Classes/Monster.js';
+import { renderHp } from './Utils/Helper.js';
 
 const startButton = document.querySelector('.start-button');
 const attackButton = document.querySelector('.attack-button');
@@ -11,13 +12,21 @@ const gameButtons = document.querySelectorAll('[data-game-has-started]');
 const playerHpElement = document.getElementById('player-hp')!;
 const monsterHpElement = document.getElementById('monster-hp')!;
 const logsWrapper = document.querySelector('.logs-wrapper')!;
+const entities = Array.from(
+  document.querySelectorAll<HTMLElement>('[id$=-hp]')
+);
 
 let game: Game;
 let player: Player;
 let monster: Monster;
+let playAgain: boolean;
 
 startButton?.addEventListener('click', () => {
   startButton.classList.add('hidden');
+
+  for (const e of entities) {
+    console.log(`je suis ${e.innerHTML}`);
+  }
 
   for (const button of gameButtons) {
     button.classList.remove('hidden');
@@ -28,7 +37,6 @@ startButton?.addEventListener('click', () => {
   return game;
 });
 
-// Could be refactored => attack and attackSP have the same code with different value
 attackButton?.addEventListener('click', () => {
   const damageDoneByPlayer = Player.attack(3, 10);
   monster.hp -= damageDoneByPlayer;
@@ -43,19 +51,15 @@ attackButton?.addEventListener('click', () => {
     player.hp = 0;
   }
 
-  playerHpElement.innerHTML = String(player.hp);
-  playerHpElement.style.width = `${player.hp}%`;
-
-  monsterHpElement.innerHTML = String(monster.hp);
-  monsterHpElement.style.width = `${monster.hp}%`;
+  renderHp(entities, [player.hp, monster.hp]);
 
   logsWrapper.insertAdjacentHTML(
     'afterbegin',
-    `<p>Player attacks the monster for ${damageDoneByPlayer} </p>`
+    `<p class="player-log">Player attacks the monster for ${damageDoneByPlayer} </p>`
   );
   logsWrapper.insertAdjacentHTML(
     'afterbegin',
-    `<p>Monster attacks the player for ${damageDoneByMonster} </p>`
+    `<p class="monster-log">Monster attacks the player for ${damageDoneByMonster} </p>`
   );
 });
 
@@ -73,19 +77,15 @@ attackSpButton?.addEventListener('click', () => {
     player.hp = 0;
   }
 
-  playerHpElement.innerHTML = String(player.hp);
-  playerHpElement.style.width = `${player.hp}%`;
-
-  monsterHpElement.innerHTML = String(monster.hp);
-  monsterHpElement.style.width = `${monster.hp}%`;
+  renderHp(entities, [player.hp, monster.hp]);
 
   logsWrapper.insertAdjacentHTML(
     'afterbegin',
-    `<p>Player attacks the monster for ${damageDoneByPlayer} </p>`
+    `<p class="player-log">Player attacks the monster for ${damageDoneByPlayer} </p>`
   );
   logsWrapper.insertAdjacentHTML(
     'afterbegin',
-    `<p>Monster attacks the player for ${damageDoneByMonster} </p>`
+    `<p class="monster-log">Monster attacks the player for ${damageDoneByMonster} </p>`
   );
 });
 
@@ -98,21 +98,19 @@ healButton?.addEventListener('click', () => {
     player.hp = 0;
   }
 
-  playerHpElement.innerHTML = String(player.hp);
-  playerHpElement.style.width = `${player.hp}%`;
+  renderHp(entities, [player.hp, monster.hp]);
 
-  monsterHpElement.innerHTML = String(monster.hp);
-  monsterHpElement.style.width = `${monster.hp}%`;
-
-  logsWrapper.insertAdjacentHTML('afterbegin', `<p>Player heals for 10 </p>`);
   logsWrapper.insertAdjacentHTML(
     'afterbegin',
-    `<p>Monster attacks the player for ${damageDoneByMonster} </p>`
+    `<p class="player-log">Player heals for 10 </p>`
+  );
+  logsWrapper.insertAdjacentHTML(
+    'afterbegin',
+    `<p class="monster-log">Monster attacks the player for ${damageDoneByMonster} </p>`
   );
 });
 
 giveUpButton?.addEventListener('click', () => {
-  game.isLost = true;
   const playAgain = confirm(
     'You fleed the battle... Would you like to play again ?'
   );
@@ -122,9 +120,5 @@ giveUpButton?.addEventListener('click', () => {
     player = game.player;
     monster = game.monster;
   }
-  playerHpElement.innerHTML = String(player.hp);
-  playerHpElement.style.width = `${player.hp}%`;
-
-  monsterHpElement.innerHTML = String(monster.hp);
-  monsterHpElement.style.width = `${monster.hp}%`;
+  renderHp(entities, [player.hp, monster.hp]);
 });
