@@ -122,3 +122,25 @@ giveUpButton?.addEventListener('click', () => {
   }
   renderHp(entities, [player.hp, monster.hp]);
 });
+
+for (const button of gameButtons) {
+  button.addEventListener('click', () => {
+    if (
+      playerHpElement.innerHTML === '0' ||
+      monsterHpElement.innerHTML === '0'
+    ) {
+      playerHpElement.innerHTML > '0'
+        ? (playAgain = confirm(
+            'Congratulations, you won! Would you like to play again ?'
+          ))
+        : (playAgain = confirm('You lost... Would you like to try again ?'));
+
+      if (playAgain) {
+        game = Game.newGame();
+        player = game.player;
+        monster = game.monster;
+      }
+      renderHp(entities, [player.hp, monster.hp]);
+    }
+  });
+}
