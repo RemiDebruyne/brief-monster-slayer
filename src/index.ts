@@ -1,7 +1,7 @@
 import { Game } from './Classes/Game.js';
 import { Player } from './Classes/Player.js';
 import { Monster } from './Classes/Monster.js';
-import { renderHp } from './Utils/Helper.js';
+import { renderHp, renderLogs } from './Utils/Helper.js';
 
 const startButton = document.querySelector('.start-button');
 const attackButton = document.querySelector('.attack-button');
@@ -23,10 +23,6 @@ let playAgain: boolean;
 
 startButton?.addEventListener('click', () => {
   startButton.classList.add('hidden');
-
-  for (const e of entities) {
-    console.log(`je suis ${e.innerHTML}`);
-  }
 
   for (const button of gameButtons) {
     button.classList.remove('hidden');
@@ -53,14 +49,17 @@ attackButton?.addEventListener('click', () => {
 
   renderHp(entities, [player.hp, monster.hp]);
 
-  logsWrapper.insertAdjacentHTML(
-    'afterbegin',
-    `<p class="player-log">Player attacks the monster for ${damageDoneByPlayer} </p>`
-  );
-  logsWrapper.insertAdjacentHTML(
-    'afterbegin',
-    `<p class="monster-log">Monster attacks the player for ${damageDoneByMonster} </p>`
-  );
+  renderLogs(logsWrapper, 'player', 'attack', damageDoneByPlayer);
+  renderLogs(logsWrapper, 'monster', 'hit', damageDoneByMonster);
+
+  // logsWrapper.insertAdjacentHTML(
+  //   'afterbegin',
+  //   `<p class="player-log">Player attacks the monster for ${damageDoneByPlayer} </p>`
+  // );
+  // logsWrapper.insertAdjacentHTML(
+  //   'afterbegin',
+  //   `<p class="monster-log">Monster attacks the player for ${damageDoneByMonster} </p>`
+  // );
 });
 
 attackSpButton?.addEventListener('click', () => {
@@ -78,15 +77,8 @@ attackSpButton?.addEventListener('click', () => {
   }
 
   renderHp(entities, [player.hp, monster.hp]);
-
-  logsWrapper.insertAdjacentHTML(
-    'afterbegin',
-    `<p class="player-log">Player attacks the monster for ${damageDoneByPlayer} </p>`
-  );
-  logsWrapper.insertAdjacentHTML(
-    'afterbegin',
-    `<p class="monster-log">Monster attacks the player for ${damageDoneByMonster} </p>`
-  );
+  renderLogs(logsWrapper, 'player', 'attack', damageDoneByPlayer);
+  renderLogs(logsWrapper, 'monster', 'hit', damageDoneByMonster);
 });
 
 healButton?.addEventListener('click', () => {
@@ -99,15 +91,8 @@ healButton?.addEventListener('click', () => {
   }
 
   renderHp(entities, [player.hp, monster.hp]);
-
-  logsWrapper.insertAdjacentHTML(
-    'afterbegin',
-    `<p class="player-log">Player heals for 10 </p>`
-  );
-  logsWrapper.insertAdjacentHTML(
-    'afterbegin',
-    `<p class="monster-log">Monster attacks the player for ${damageDoneByMonster} </p>`
-  );
+  renderLogs(logsWrapper, 'player', 'attack', 10);
+  renderLogs(logsWrapper, 'monster', 'hit', damageDoneByMonster);
 });
 
 giveUpButton?.addEventListener('click', () => {
